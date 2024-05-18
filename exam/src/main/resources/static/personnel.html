@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personnel Management</title>
+</head>
+<body>
+<h1>Personnel Management</h1>
+
+<h2>Ajouter un nouveau membre du personnel</h2>
+<form action="/personnel" method="post">
+    <label for="nom">Nom:</label>
+    <input type="text" id="nom" name="nom"><br><br>
+    <label for="prenom">Prénom:</label>
+    <input type="text" id="prenom" name="prenom"><br><br>
+    <label for="type">Type:</label>
+    <select id="type" name="type">
+        <option value="Administrateur">Administrateur</option>
+        <option value="Enseignant">Enseignant</option>
+    </select><br><br>
+    <button type="submit">Ajouter</button>
+</form>
+
+<h2>Liste du personnel</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>a
+        <th>Prénom</th>
+        <th>Type</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through personnelList -->
+    <th:block th:each="personnel : ${personnelList}">
+        <tr>
+            <td th:text="${personnel.nom}"></td>
+            <td th:text="${personnel.prenom}"></td>
+            <td th:text="${personnel.type}"></td>
+            <td>
+                <a th:href="@{/personnel/{id}(id=${personnel.id})}">Modifier</a>
+                <a th:href="@{/personnel/delete/{id}(id=${personnel.id})}">Supprimer</a>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+</body>
+</html>

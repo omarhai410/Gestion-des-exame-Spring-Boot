@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Management</title>
+    <style>
+        /* Styles CSS */
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Exam Management</h1>
+
+<!-- Contenu des onglets -->
+<div id="list" class="tabcontent">
+    <!-- Contenu de la liste des examens -->
+    <h2>Exam List</h2>
+    <ul id="examList">
+        <!-- Affichage dynamique de la liste des examens -->
+        <li th:each="exam : ${exams}">
+            <p>ID: <span th:text="${exam.id}"></span></p>
+            <p>Semester: <span th:text="${exam.semester}"></span></p>
+            <!-- Ajoutez plus de propriétés au besoin -->
+        </li>
+    </ul>
+</div>
+
+<div id="add" class="tabcontent">
+    <!-- Formulaire d'ajout d'un examen -->
+    <h2>Add Exam</h2>
+    <form method="post" th:action="@{/exams/add}" th:object="${exam}">
+        <!-- Champs du formulaire -->
+        <button type="submit">Add Exam</button>
+    </form>
+</div>
+
+<div id="edit" class="tabcontent">
+    <!-- Formulaire de modification d'un examen -->
+    <h2>Edit Exam</h2>
+    <form method="post" th:action="@{/exams/{id}/edit(id=${exam.id})}" th:object="${exam}">
+        <!-- Champs du formulaire -->
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+<div id="delete" class="tabcontent">
+    <!-- Formulaire de suppression d'un examen -->
+    <h2>Delete Exam</h2>
+    <form method="post" th:action="@{/exams/{id}/delete(id=${exam.id})}">
+        <!-- Affichage des détails de l'examen à supprimer -->
+        <p>ID: <span th:text="${exam.id}"></span></p>
+        <p>Semester: <span th:text="${exam.semester}"></span></p>
+        <!-- Ajoutez plus de propriétés au besoin -->
+        <button type="submit">Delete</button>
+    </form>
+</div>
+
+<!-- Affiche uniquement la liste des examens par défaut -->
+<script th:inline="javascript">
+    document.getElementById('list').style.display = 'block';
+</script>
+</body>
+</html>

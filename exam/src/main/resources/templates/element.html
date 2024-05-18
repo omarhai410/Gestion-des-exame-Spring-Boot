@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des éléments pédagogiques</title>
+  <!-- Ajout de Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Ajout de styles CSS personnalisés */
+    .custom-form {
+      border: 1px solid #ced4da; /* Bordure */
+      border-radius: 10px; /* Coins arrondis */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre */
+      padding: 20px; /* Espacement intérieur */
+    }
+  </style>
+</head>
+
+<body class="container">
+
+<h1 class="display-4 mb-4">Liste des éléments pédagogiques</h1>
+<ul class="list-group mb-4">
+  <li class="list-group-item d-flex justify-content-between align-items-center" th:each="element : ${elementsPedagogiques}">
+    <span th:text="${element.titre}"></span> -
+    <span th:text="${element.niveau}"></span> -
+    <span th:text="${element.coordonnateur}"></span> -
+    <span th:text="${element.type}"></span> <!-- Afficher le type -->
+    <!-- Boutons pour la modification et la suppression -->
+    <form th:action="@{'/element/update/' + ${element.id}}" method="post">
+      <button type="submit" class="btn btn-primary me-2">Modifier</button>
+    </form>
+    <form th:action="@{'/element/delete/' + ${element.id}}" method="post">
+      <button type="submit" class="btn btn-danger">Supprimer</button>
+    </form>
+  </li>
+</ul>
+
+<h2 class="display-5 mb-4">Ajouter un nouvel élément pédagogique</h2>
+<form th:action="@{/element/add}" method="post" class="mb-4 custom-form">
+  <input type="text" name="titre" placeholder="Titre" required class="form-control mb-2"><br>
+  <input type="text" name="niveau" placeholder="Niveau" required class="form-control mb-2"><br>
+  <input type="text" name="coordonnateur" placeholder="Coordonnateur" required class="form-control mb-2"><br>
+  <input type="text" name="type" placeholder="Type" required class="form-control mb-2"><br>
+  <button type="submit" class="btn btn-success">Ajouter</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

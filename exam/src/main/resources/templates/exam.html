@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Exam</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        #examFormContainer {
+            border: 1px solid #ccc; /* Bordure grise */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+            padding: 20px; /* Ajout de rembourrage pour l'espace autour du formulaire */
+        }
+
+
+
+
+
+    </style>
+
+</head>
+<body>
+<div class="container"  id="examFormContainer">
+    <h1 class="mt-5">Add Exam</h1>
+    <form class="mt-4" action="/exams/add" method="post">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="semester">Semester:</label>
+                    <input type="text" class="form-control" id="semester" name="semester">
+                </div>
+
+                <div class="form-group">
+                    <label for="session">Session:</label>
+                    <input type="text" class="form-control" id="session" name="session">
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <input type="text" class="form-control" id="type" name="type">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="text" class="form-control" id="date" name="date">
+                </div>
+
+                <div class="form-group">
+                    <label for="startTime">Start Time:</label>
+                    <input type="text" class="form-control" id="startTime" name="startTime">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label for="plannedDuration">Planned Duration:</label>
+                    <input type="text" class="form-control" id="plannedDuration" name="plannedDuration">
+                </div>
+
+                <div class="form-group">
+                    <label for="actualDuration">Actual Duration:</label>
+                    <input type="text" class="form-control" id="actualDuration" name="actualDuration">
+                </div>
+
+                <div class="form-group">
+                    <label for="coordinator">Coordinator:</label>
+                    <input type="text" class="form-control" id="coordinator" name="coordinator">
+                </div>
+
+                <div class="form-group">
+                    <label for="academicYear">Academic Year:</label>
+                    <input type="text" class="form-control" id="academicYear" name="academicYear">
+                </div>
+
+                <div class="form-group">
+                    <label for="salleNoms">Salle Names (Comma separated):</label>
+                    <input type="text" class="form-control" id="salleNoms" name="salleNoms">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label for="venue">Venue (Comma separated):</label>
+                    <input type="text" class="form-control" id="venue" name="venue">
+                </div>
+
+                <div class="form-group">
+                    <label for="invigilators">Invigilators (Comma separated):</label>
+                    <input type="text" class="form-control" id="invigilators" name="invigilators">
+                </div>
+
+                <div class="form-group">
+                    <label for="absenceControllers">Absence Controllers (Comma separated):</label>
+                    <input type="text" class="form-control" id="absenceControllers" name="absenceControllers">
+                </div>
+
+                <div class="form-group">
+                    <label for="report">Report:</label>
+                    <input type="text" class="form-control" id="report" name="report">
+                </div>
+
+                <div class="form-group">
+                    <label for="examPaper">Exam Paper:</label>
+                    <input type="text" class="form-control" id="examPaper" name="examPaper">
+                </div>
+
+                <div class="form-group">
+                    <label for="proceedings">Proceedings:</label>
+                    <input type="text" class="form-control" id="proceedings" name="proceedings">
+                </div>
+
+                <div class="form-group">
+                    <label for="elementPedagogiqueName">Element Pedagogique Name:</label>
+                    <input type="text" class="form-control" id="elementPedagogiqueName" name="elementPedagogiqueName">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<div class="container ">
+    <h1>Recherche d'examens</h1>
+    <form class="form-inline shadow p-3 mb-5 bg-white rounded" action="/search" method="GET">
+        <div class="form-group">
+            <label for="elementPedagogique">Élément Pédagogique :</label>
+            <input type="text" class="form-control" id="elementPedagogique" name="elementPedagogique">
+        </div>
+
+        <div class="form-group mx-sm-3">
+            <label for="semester">Semestre :</label>
+            <input type="text" class="form-control" id="semester" name="semester">
+        </div>
+
+        <div class="form-group">
+            <label for="session">Session :</label>
+            <input type="text" class="form-control" id="session" name="session">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+</div>
+<div class="container shadow p-3 mb-5 bg-white rounded">
+    <h1>Résultats de la recherche</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Checkbox</th>
+                <th>Semestre</th>
+                <th>Session</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Heure de début</th>
+                <th>Durée planifiée</th>
+                <th>Durée réelle</th>
+                <th>Coordinateur</th>
+                <th>Année académique</th>
+                <th>Lieu</th>
+                <th>Surveillants</th>
+                <th>Contrôleurs d'absence</th>
+                <th>Rapport</th>
+                <th>Papier d'examen</th>
+                <th>Procès-verbal</th>
+                <th>Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Utilisez Thymeleaf pour parcourir les examens et les afficher -->
+            <tr th:each="exam : ${exams}">
+                <td th:text="${exam.id}"></td>
+                <td><input type="checkbox" class="exam-checkbox" th:data-exam-id="${exam.id}"></td>
+                <td th:text="${exam.semester}"></td>
+                <td th:text="${exam.session}"></td>
+                <td th:text="${exam.type}"></td>
+                <td th:text="${exam.date}"></td>
+                <td th:text="${exam.startTime}"></td>
+                <td th:text="${exam.plannedDuration}"></td>
+                <td th:text="${exam.actualDuration}"></td>
+                <td th:text="${exam.coordinator}"></td>
+                <td th:text="${exam.academicYear}"></td>
+                <td>
+                    <ul>
+                        <li th:each="venue : ${exam.venue}" th:text="${venue}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="invigilator : ${exam.invigilators}" th:text="${invigilator}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="controller : ${exam.absenceControllers}" th:text="${controller}"></li>
+                    </ul>
+                </td>
+                <td th:text="${exam.report}"></td>
+                <td th:text="${exam.examPaper}"></td>
+                <td th:text="${exam.proceedings}"></td>
+                <td>
+                    <form action="/exams/delete" method="post">
+                        <input type="hidden" name="examId" th:value="${exam.id}">
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container" id="examDisplayFormContainer">
+    <h1 class="mt-5">Exam Details</h1>
+    <form class="mt-4">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="displaySemester">Semester:</label>
+                    <input type="text" class="form-control" id="displaySemester" name="semester" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displaySession">Session:</label>
+                    <input type="text" class="form-control" id="displaySession" name="session" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayType">Type:</label>
+                    <input type="text" class="form-control" id="displayType" name="type" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayDate">Date:</label>
+                    <input type="text" class="form-control" id="displayDate" name="date" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayStartTime">Start Time:</label>
+                    <input type="text" class="form-control" id="displayStartTime" name="startTime" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="displayPlannedDuration">Planned Duration:</label>
+                    <input type="text" class="form-control" id="displayPlannedDuration" name="plannedDuration" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayActualDuration">Actual Duration:</label>
+                    <input type="text" class="form-control" id="displayActualDuration" name="actualDuration" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayCoordinator">Coordinator:</label>
+                    <input type="text" class="form-control" id="displayCoordinator" name="coordinator" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayAcademicYear">Academic Year:</label>
+                    <input type="text" class="form-control" id="displayAcademicYear" name="academicYear" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displaySalleNoms">Salle Names (Comma separated):</label>
+                    <input type="text" class="form-control" id="displaySalleNoms" name="salleNoms" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="displayVenue">Venue (Comma separated):</label>
+                    <input type="text" class="form-control" id="displayVenue" name="venue" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayInvigilators">Invigilators (Comma separated):</label>
+                    <input type="text" class="form-control" id="displayInvigilators" name="invigilators" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayAbsenceControllers">Absence Controllers (Comma separated):</label>
+                    <input type="text" class="form-control" id="displayAbsenceControllers" name="absenceControllers" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayReport">Report:</label>
+                    <input type="text" class="form-control" id="displayReport" name="report" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayExamPaper">Exam Paper:</label>
+                    <input type="text" class="form-control" id="displayExamPaper" name="examPaper" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayProceedings">Proceedings:</label>
+                    <input type="text" class="form-control" id="displayProceedings" name="proceedings" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="displayElementPedagogiqueName">Element Pedagogique Name:</label>
+                    <input type="text" class="form-control" id="displayElementPedagogiqueName" name="elementPedagogiqueName" readonly>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.exam-checkbox').change(function() {
+            if ($(this).is(':checked')) {
+                var row = $(this).closest('tr');
+                $('#displaySemester').val(row.find('td:nth-child(3)').text());
+                $('#displaySession').val(row.find('td:nth-child(4)').text());
+                $('#displayType').val(row.find('td:nth-child(5)').text());
+                $('#displayDate').val(row.find('td:nth-child(6)').text());
+                $('#displayStartTime').val(row.find('td:nth-child(7)').text());
+                $('#displayPlannedDuration').val(row.find('td:nth-child(8)').text());
+                $('#displayActualDuration').val(row.find('td:nth-child(9)').text());
+                $('#displayCoordinator').val(row.find('td:nth-child(10)').text());
+                $('#displayAcademicYear').val(row.find('td:nth-child(11)').text());
+                $('#displaySalleNoms').val(row.find('td:nth-child(12) li').map(function() { return $(this).text(); }).get().join(', '));
+                $('#displayVenue').val(row.find('td:nth-child(13) li').map(function() { return $(this).text(); }).get().join(', '));
+                $('#displayInvigilators').val(row.find('td:nth-child(14) li').map(function() { return $(this).text(); }).get().join(', '));
+                $('#displayAbsenceControllers').val(row.find('td:nth-child(15) li').map(function() { return $(this).text(); }).get().join(', '));
+                $('#displayReport').val(row.find('td:nth-child(16)').text());
+                $('#displayExamPaper').val(row.find('td:nth-child(17)').text());
+                $('#displayProceedings').val(row.find('td:nth-child(18)').text());
+                $('#displayElementPedagogiqueName').val(row.find('td:nth-child(19)').text());
+
+                $('#examDisplayFormContainer').show();
+            }
+        });
+    });
+</script>
+</body>
+</html>

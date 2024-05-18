@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion du Personnel</title>
+    <!-- Intégration de Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5 mb-4">Gestion du Personnel</h1>
+
+    <!-- Formulaire pour créer un nouveau membre du personnel -->
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Créer un nouveau membre du personnel</h2>
+            <form th:action="@{/personnel/create}" method="post">
+                <div class="form-group">
+                    <label for="nom">Nom:</label>
+                    <input type="text" class="form-control" id="nom" name="nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="prenom">Prénom:</label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <select class="form-control" id="type" name="type">
+                        <option value="administrateur">Administrateur</option>
+                        <option value="enseignant">Enseignant</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="departement">Département:</label>
+                    <select class="form-control" id="departement" name="departement" onchange="updateFiliere()">
+                        <option value="">Sélectionnez le département</option>
+                        <!-- Remplir cette liste avec les départements existants -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filiere">Filière:</label>
+                    <select class="form-control" id="filiere" name="filiere" onchange="updatePromotion()">
+                        <option value="">Sélectionnez la filière</option>
+                        <!-- Remplir cette liste avec les filières existantes -->
+                    </select>
+                </div>
+
+                <div class="form-group" id="promotion-group">
+                    <label for="promotions">Promotions (séparées par des virgules):</label>
+                    <input type="text" class="form-control" id="promotions" name="promotions" placeholder="Entrez les promotions séparées par des virgules">
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h2>Créer un nouveau groupe</h2>
+            <form th:action="@{/groupes/create}" method="post">
+                <div class="form-group">
+                    <label for="nom_groupe">Nom du groupe:</label>
+                    <input type="text" class="form-control" id="nom_groupe" name="nom_groupe" required>
+                </div>
+                <div class="form-group">
+                    <label for="enseignants">Enseignants:</label>
+                    <textarea class="form-control" id="enseignants" name="enseignants" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Liste du personnel -->
+    <div class="mt-5">
+        <h2>Liste du Personnel</h2>
+        <ul class="list-group">
+            <th:block th:each="personnel : ${personnelList}">
+                <li class="list-group-item"><a th:href="@{'/personnel/details/' + ${personnel.id}}" th:text="${personnel.nom} + ' ' + ${personnel.prenom}"></a></li>
+            </th:block>
+        </ul>
+    </div>
+
+    <!-- Liste des groupes -->
+    <div class="mt-5">
+        <h2>Liste des Groupes</h2>
+        <ul class="list-group">
+            <th:block th:each="groupe : ${groupeList}">
+                <li class="list-group-item"><a th:href="@{'/groupes/details/' + ${groupe.id}}" th:text="${groupe.nom}"></a></li>
+            </th:block>
+        </ul>
+    </div>
+
+    <!-- Détails du personnel -->
+    <div class="mt-5" th:if="${selectedPersonnel}">
+        <h2>Détails du Personnel</h2>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th scope="row">Nom:</th>
+                <td th:text="${selectedPersonnel.nom}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Prénom:</th>
+                <td th:text="${selectedPersonnel.prenom}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Type:</th>
+                <td th:text="${selectedPersonnel.type}"></td>
+            </tr>
+            <!-- Afficher les informations sur les promotions -->
+            <tr>
+                <th scope="row">Promotions:</th>
+                <td th:text="${selectedPersonnel.promotions}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Département:</th>
+                <td th:text="${selectedPersonnel.departement}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Filière:</th>
+                <td th:text="${selectedPersonnel.filiere}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a th:href="@{'/personnel/delete/' + ${selectedPersonnel.id}}" class="btn btn-danger">Supprimer</a>
+    </div>
+
+
+    <!-- Détails du groupe -->
+    <div class="mt-5" th:if="${selectedGroupe}">
+        <h2>Détails du Groupe</h2>
+        <p>Nom: <span th:text="${selectedGroupe.nom}"></span></p>
+        <p>Enseignants: <span th:text="${selectedGroupe.enseignants}"></span></p>
+        <a th:href="@{'/groupes/delete/' + ${selectedGroupe.id}}" class="btn btn-danger">Supprimer</a>
+    </div>
+</div>
+
+<!-- Intégration de Bootstrap JS (nécessaire pour certains composants Bootstrap) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Définition des données des départements et des filières
+    var departementsFiliere = {
+        "Mathématique et Informatique": ["CP", "GI", "ID", "TDIA"],
+        "Génie Civil et Environnement": ["GC", "GEE"],
+        "Mécanique Énergétique": ["GM", "GEER"]
+    };
+
+    // Fonction pour mettre à jour les filières en fonction du département sélectionné
+    function updateFiliere() {
+        var departement = document.getElementById("departement").value;
+        var filieres = departementsFiliere[departement] || [];
+
+        var filiereSelect = document.getElementById("filiere");
+        filiereSelect.innerHTML = "<option value=''>Sélectionnez la filière</option>"; // Réinitialise les options et ajoute le premier choix par défaut
+
+        filieres.forEach(function (filiere) {
+            var option = document.createElement("option");
+            option.text = filiere;
+            option.value = filiere;
+            filiereSelect.appendChild(option);
+        });
+    }
+
+    // Récupérer le menu déroulant du département
+    var departementSelect = document.getElementById("departement");
+
+    // Ajouter les options des départements
+    for (var departement in departementsFiliere) {
+        var option = document.createElement("option");
+        option.text = departement;
+        option.value = departement;
+        departementSelect.appendChild(option);
+    }
+
+    // Attacher la fonction updateFiliere à l'événement onchange du menu déroulant du département
+    departementSelect.onchange = updateFiliere;
+
+    // Appeler updateFiliere au chargement de la page pour initialiser les filières
+    updateFiliere();
+</script>
+<script>
+    // Fonction pour afficher ou masquer le champ de promotion en fonction du type sélectionné
+    function updatePromotion() {
+        var type = document.getElementById("type").value;
+        var promotionGroup = document.getElementById("promotion-group");
+
+        // Si le type est enseignant, afficher le champ de promotion, sinon le cacher
+        if (type === "enseignant") {
+            promotionGroup.style.display = "block";
+        } else {
+            promotionGroup.style.display = "none";
+        }
+    }
+
+    // Appeler la fonction au chargement de la page et à chaque fois que le type est modifié
+    document.addEventListener("DOMContentLoaded", function() {
+        updatePromotion();
+        document.getElementById("type").addEventListener("change", updatePromotion);
+    });
+</script>
+</body>
+</html>
